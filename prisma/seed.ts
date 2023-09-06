@@ -14,6 +14,7 @@ async function seed() {
 
             const mappedShipment = {
                 ...shipment,
+                date: new Date(shipment.date),
                 status: cleanedStatus,
             };
 
@@ -30,4 +31,12 @@ async function seed() {
     }
 }
 
-seed();
+seed()
+    .then(async () => {
+        await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    });

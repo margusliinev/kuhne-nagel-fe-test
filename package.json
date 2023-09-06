@@ -12,7 +12,7 @@
         "app": "concurrently \"npm run dev\" \"cd client && npm run dev\"",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
         "seed": "ts-node prisma/seed.ts",
-        "setup": "cd client && npm install && npm run build && cd .. && npm install && npm run seed && npm run build",
+        "setup": "cd client && npm install && npm run build && cd .. && npm install && npm run build",
         "start": "node dist/main"
     },
     "dependencies": {
