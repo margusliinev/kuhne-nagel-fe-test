@@ -12,7 +12,7 @@
         "app": "concurrently \"npm run dev\" \"cd client && npm run dev\"",
         "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0 --fix",
         "seed": "ts-node prisma/seed.ts",
-        "setup": "cd client && npm install && npm run build && cd .. && npm install && npm run build",
+        "setup": "cd client && npm install && npm run build && cd .. && npm install && npm run build && npm run seed",
         "start": "node dist/main"
     },
     "dependencies": {
@@ -22,6 +22,7 @@
         "@nestjs/platform-express": "^10.0.0",
         "@nestjs/serve-static": "^4.0.0",
         "@prisma/client": "^5.2.0",
+        "dotenv": "^16.3.1",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.8.1"
     },

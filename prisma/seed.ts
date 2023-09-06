@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import shipmentsJson from './shipments.json';
+require('dotenv').config();
 
 const prisma = new PrismaClient();
 
