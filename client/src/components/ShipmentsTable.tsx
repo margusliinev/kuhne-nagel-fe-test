@@ -1,18 +1,24 @@
 import { Shipment } from './types';
+import { Button } from './ui';
 
 const TableHeader = ({ columns }: { columns: string[] }) => {
     return (
         <thead>
-            {columns.map((column) => {
-                return (
-                    <th
-                        className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'
-                        key={column}
-                    >
-                        {column === 'date' ? 'Delivery Date' : column}
-                    </th>
-                );
-            })}
+            <tr>
+                {columns.map((column) => {
+                    return (
+                        <th
+                            className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'
+                            key={column}
+                        >
+                            {column === 'date' ? 'Delivery Date' : column}
+                        </th>
+                    );
+                })}
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
+                    Modify
+                </th>
+            </tr>
         </thead>
     );
 };
@@ -38,6 +44,16 @@ const TableBody = ({ shipments, columns }: { shipments: Shipment[]; columns: str
                                 );
                             }
                         })}
+                        <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
+                            <div className='flex items-center gap-4'>
+                                <Button size={'sm'} className='bg-green-600 hover:bg-green-700'>
+                                    Edit
+                                </Button>
+                                <Button size={'sm'} className='bg-red-600 hover:bg-red-700'>
+                                    Delete
+                                </Button>
+                            </div>
+                        </th>
                     </tr>
                 );
             })}
