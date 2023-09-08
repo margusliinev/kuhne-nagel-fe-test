@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Shipment } from '@/components/types';
+import { Shipment } from '@/types';
 import axios from 'axios';
 
 type ShipmentsState = {
@@ -33,6 +33,14 @@ const shipmentsSlice = createSlice({
             state.page = payload;
             state.displayedShipments = [...state.shipments.slice((payload - 1) * state.count, payload * state.count)];
         },
+        deleteShipment: (state, { payload }: { payload: number }) => {
+            state.shipments = state.shipments.filter((shipment) => shipment.id !== payload);
+            state.displayedShipments = state.shipments.slice((state.page - 1) * state.count, state.page * state.count);
+        },
+        updateShipment: (state, { payload }: { payload: Shipment }) => {
+            state.shipments = state.shipments.map((shipment) => (shipment.id === payload.id ? payload : shipment));
+            state.displayedShipments = state.shipments.slice((state.page - 1) * state.count, state.page * state.count);
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -46,12 +54,12 @@ const shipmentsSlice = createSlice({
             .addCase(getShipments.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isError = false;
-                state.shipments = [...action.payload];
-                state.displayedShipments = [...action.payload.slice(0, state.count)];
+                state.shipments = [...action.payload].sort((a, b) => (a.date > b.date ? 1 : -1));
+                state.displayedShipments = state.shipments.slice(0, state.count);
             });
     },
 });
 
 export { getShipments };
-export const { changePage } = shipmentsSlice.actions;
+export const { changePage, deleteShipment, updateShipment } = shipmentsSlice.actions;
 export default shipmentsSlice.reducer;

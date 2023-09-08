@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import shipmentsReducer from './features/shipments/shipmentsSlice';
+import singleShipmentReducer from './features/singleShipment/singleShipmentSlice';
 
 export const store = configureStore({
     reducer: {
         shipments: shipmentsReducer,
+        singleShipment: singleShipmentReducer,
     },
 });
 

@@ -1,5 +1,6 @@
-import { Shipment } from './types';
-import { Button } from './ui';
+import DeleteShipmentModal from './DeleteShipmentModal';
+import EditShipmentModal from './EditShipmentModal';
+import { Shipment } from '../types';
 
 const TableHeader = ({ columns }: { columns: string[] }) => {
     return (
@@ -44,14 +45,10 @@ const TableBody = ({ shipments, columns }: { shipments: Shipment[]; columns: str
                                 );
                             }
                         })}
-                        <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
+                        <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r'>
                             <div className='flex items-center gap-4'>
-                                <Button size={'sm'} className='bg-green-600 hover:bg-green-700'>
-                                    Edit
-                                </Button>
-                                <Button size={'sm'} className='bg-red-600 hover:bg-red-700'>
-                                    Delete
-                                </Button>
+                                <EditShipmentModal shipmentID={shipment.id} />
+                                <DeleteShipmentModal shipmentID={shipment.id} />
                             </div>
                         </th>
                     </tr>
@@ -64,12 +61,10 @@ const TableBody = ({ shipments, columns }: { shipments: Shipment[]; columns: str
 const ShipmentsTable = ({ shipments }: { shipments: Shipment[] }) => {
     const columns = ['orderNo', 'date', 'customer', 'trackingNo', 'status', 'consignee'];
     return (
-        <div>
-            <table className='table-fixed w-full border-collapse'>
-                <TableHeader columns={columns} />
-                <TableBody shipments={shipments} columns={columns} />
-            </table>
-        </div>
+        <table className='w-full border-collapse shadow-md xl:table-fixed '>
+            <TableHeader columns={columns} />
+            <TableBody shipments={shipments} columns={columns} />
+        </table>
     );
 };
 
