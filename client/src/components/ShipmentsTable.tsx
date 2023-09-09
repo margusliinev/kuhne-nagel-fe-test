@@ -2,20 +2,37 @@ import DeleteShipmentModal from './DeleteShipmentModal';
 import EditShipmentModal from './EditShipmentModal';
 import { Shipment } from '../types';
 
-const TableHeader = ({ columns }: { columns: string[] }) => {
+const ShipmentsTable = ({ shipments }: { shipments: Shipment[] }) => {
+    return (
+        <table className='w-full border-collapse shadow-md xl:table-fixed '>
+            <TableHeader />
+            <TableBody shipments={shipments} />
+        </table>
+    );
+};
+
+const TableHeader = () => {
     return (
         <thead>
             <tr>
-                {columns.map((column) => {
-                    return (
-                        <th
-                            className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'
-                            key={column}
-                        >
-                            {column === 'date' ? 'Delivery Date' : column}
-                        </th>
-                    );
-                })}
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
+                    orderNo
+                </th>
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden sm:table-cell'>
+                    delivery date
+                </th>
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
+                    customer
+                </th>
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden lg:table-cell'>
+                    trackingNo
+                </th>
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden md:table-cell'>
+                    status
+                </th>
+                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden lg:table-cell'>
+                    consignee
+                </th>
                 <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
                     Modify
                 </th>
@@ -24,47 +41,36 @@ const TableHeader = ({ columns }: { columns: string[] }) => {
     );
 };
 
-const TableBody = ({ shipments, columns }: { shipments: Shipment[]; columns: string[] }) => {
+const TableBody = ({ shipments }: { shipments: Shipment[] }) => {
     return (
         <tbody>
             {shipments.map((shipment) => {
                 return (
                     <tr key={shipment.id}>
-                        {columns.map((column) => {
-                            if (column === 'date') {
-                                return (
-                                    <td key={column} className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>
-                                        {new Date(shipment[column as keyof Shipment]).toLocaleDateString()}
-                                    </td>
-                                );
-                            } else {
-                                return (
-                                    <td key={column} className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>
-                                        {String(shipment[column as keyof Shipment])}
-                                    </td>
-                                );
-                            }
-                        })}
-                        <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r'>
-                            <div className='flex items-center gap-4'>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>{shipment.orderNo}</td>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden sm:table-cell'>
+                            {new Date(shipment.date).toLocaleDateString()}
+                        </td>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>{shipment.customer}</td>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden lg:table-cell'>
+                            {shipment.trackingNo}
+                        </td>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden md:table-cell'>
+                            {shipment.status}
+                        </td>
+                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden lg:table-cell'>
+                            {shipment.consignee}
+                        </td>
+                        <td className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r'>
+                            <div className='grid sm:flex items-center gap-2'>
                                 <EditShipmentModal shipmentID={shipment.id} />
                                 <DeleteShipmentModal shipmentID={shipment.id} />
                             </div>
-                        </th>
+                        </td>
                     </tr>
                 );
             })}
         </tbody>
-    );
-};
-
-const ShipmentsTable = ({ shipments }: { shipments: Shipment[] }) => {
-    const columns = ['orderNo', 'date', 'customer', 'trackingNo', 'status', 'consignee'];
-    return (
-        <table className='w-full border-collapse shadow-md xl:table-fixed '>
-            <TableHeader columns={columns} />
-            <TableBody shipments={shipments} columns={columns} />
-        </table>
     );
 };
 

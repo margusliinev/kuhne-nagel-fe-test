@@ -17,7 +17,7 @@ const DeleteShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
 
     return (
         <AlertDialog>
-            <AlertDialogTrigger className='bg-destructive hover:bg-destructive/90 text-white font-medium max-w-fit text-sm py-2 px-3 rounded-md'>
+            <AlertDialogTrigger className='bg-destructive hover:bg-destructive/90 text-white font-medium  text-sm py-2 px-3 rounded-md'>
                 Delete
             </AlertDialogTrigger>
             <AlertDialogContent>

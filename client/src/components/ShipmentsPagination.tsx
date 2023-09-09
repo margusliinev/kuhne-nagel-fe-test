@@ -35,19 +35,21 @@ const ShipmentsPagination = ({ pages }: { pages: number[] }) => {
                     <path strokeLinecap='round' strokeLinejoin='round' d='M15.75 19.5L8.25 12l7.5-7.5' />
                 </svg>
             </button>
-            {pages.map((pageNumber) => {
-                return (
-                    <button
-                        type='button'
-                        className='bg-blue-800 text-sm text-white transition-colors hover:bg-blue-900 w-10 h-10 rounded-md disabled:opacity-70'
-                        key={pageNumber}
-                        disabled={page === pageNumber}
-                        onClick={() => dispatch(changePage(pageNumber))}
-                    >
-                        {pageNumber}
-                    </button>
-                );
-            })}
+            <div className='flex justify-center items-center flex-wrap gap-2'>
+                {pages.map((pageNumber) => {
+                    return (
+                        <button
+                            type='button'
+                            className='bg-blue-800 text-sm text-white transition-colors hover:bg-blue-900 w-10 h-10 rounded-md disabled:opacity-70'
+                            key={pageNumber}
+                            disabled={page === pageNumber}
+                            onClick={() => dispatch(changePage(pageNumber))}
+                        >
+                            {pageNumber}
+                        </button>
+                    );
+                })}
+            </div>
             <button onClick={nextPage} className='right-0 grid place-items-center text-sm transition-colors w-10 h-10 rounded-md'>
                 <svg
                     xmlns='http://www.w3.org/2000/svg'

@@ -7,8 +7,8 @@ import FormRowDate from './FormRowDate';
 import { useState } from 'react';
 
 const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
-    const [open, setOpen] = useState(false);
     const { shipmentDetails } = useAppSelector((store) => store.singleShipment);
+    const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -28,7 +28,7 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
                 <DialogHeader>
                     <DialogTitle className='font-medium uppercase text-sm text-primary/80'>Shipment Details</DialogTitle>
                 </DialogHeader>
-                <form className='grid grid-cols-2 gap-6 my-4' onSubmit={handleSubmit}>
+                <form className='grid sm:grid-cols-2 gap-6 my-4' onSubmit={handleSubmit}>
                     <FormRowInput
                         type='text'
                         name='orderNo'
@@ -73,8 +73,8 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
                         value={shipmentDetails.status}
                         handleChange={(value) => dispatch(updateShipmentDetails({ name: 'status', value: value }))}
                     />
-                    <Button type='submit' className='bg-emerald-600 w-fit hover:bg-emerald-700' size={'sm'}>
-                        Save
+                    <Button type='submit' className='bg-emerald-600 w-20 hover:bg-emerald-700' size={'sm'}>
+                        Update
                     </Button>
                 </form>
             </DialogContent>
