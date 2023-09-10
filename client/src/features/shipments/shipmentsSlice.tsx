@@ -20,9 +20,13 @@ const initialState: ShipmentsState = {
     count: 10,
 };
 
-const getShipments = createAsyncThunk('shipments/getShipments', async () => {
-    const response = await axios<Shipment[]>('/api/v1/shipments');
-    return response.data;
+const getShipments = createAsyncThunk('shipments/getShipments', async (_, thunkAPI) => {
+    try {
+        const response = await axios<Shipment[]>('/api/v1/shipments');
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
 });
 
 const shipmentsSlice = createSlice({
@@ -54,7 +58,7 @@ const shipmentsSlice = createSlice({
             .addCase(getShipments.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.isError = false;
-                state.shipments = [...action.payload].sort((a, b) => (a.date > b.date ? 1 : -1));
+                state.shipments = [...action.payload];
                 state.displayedShipments = state.shipments.slice(0, state.count);
             });
     },

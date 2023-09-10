@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { deleteShipment, updateShipment } from '../shipments/shipmentsSlice';
-import { Shipment } from '@/types';
+import { Shipment, UpdateShipmentDto } from '@/types';
 import axios from 'axios';
 
 type ShipmentsState = {
@@ -8,9 +8,8 @@ type ShipmentsState = {
     isError: boolean;
     shipment: Shipment | null;
     shipmentDetails: {
-        id: number;
         orderNo: string;
-        date: Date;
+        date: string;
         customer: string;
         trackingNo: string;
         status: string;
@@ -23,9 +22,8 @@ const initialState: ShipmentsState = {
     isError: false,
     shipment: null,
     shipmentDetails: {
-        id: 0,
         orderNo: '',
-        date: new Date(Date.now()),
+        date: '',
         customer: '',
         trackingNo: '',
         status: '',
@@ -33,29 +31,40 @@ const initialState: ShipmentsState = {
     },
 };
 
-const getShipmentById = createAsyncThunk('signleShipment/getShipmentById', async (id: number) => {
-    const response = await axios<Shipment>(`/api/v1/shipments/${id}`);
-    return response.data;
+const getShipmentById = createAsyncThunk('singleShipment/getShipmentById', async (id: number, thunkAPI) => {
+    try {
+        const response = await axios<Shipment>(`/api/v1/shipments/${id}`);
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
 });
-
 const updateShipmentById = createAsyncThunk(
     'signleShipment/updateShipmentById',
-    async ({ id, updateShipmentDto }: { id: number; updateShipmentDto: Shipment }, thunkAPI) => {
-        const response = await axios<Shipment>(`/api/v1/shipments/${id}`, {
-            method: 'PATCH',
-            data: updateShipmentDto,
-        });
-        thunkAPI.dispatch(updateShipment(updateShipmentDto));
-        return response.data;
+    async ({ id, updateShipmentDto }: { id: number; updateShipmentDto: UpdateShipmentDto }, thunkAPI) => {
+        try {
+            const response = await axios<Shipment>(`/api/v1/shipments/${id}`, {
+                method: 'PATCH',
+                data: updateShipmentDto,
+            });
+            thunkAPI.dispatch(updateShipment({ ...updateShipmentDto, id }));
+            return response.data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
     },
 );
 
 const deleteShipmentById = createAsyncThunk('signleShipment/deleteShipmentById', async (id: number, thunkAPI) => {
-    const response = await axios<Shipment>(`/api/v1/shipments/${id}`, {
-        method: 'DELETE',
-    });
-    thunkAPI.dispatch(deleteShipment(id));
-    return response.data;
+    try {
+        const response = await axios<Shipment>(`/api/v1/shipments/${id}`, {
+            method: 'DELETE',
+        });
+        thunkAPI.dispatch(deleteShipment(id));
+        return response.data;
+    } catch (error) {
+        return thunkAPI.rejectWithValue(error);
+    }
 });
 
 const singleShipmentSlice = createSlice({
@@ -64,16 +73,11 @@ const singleShipmentSlice = createSlice({
     reducers: {
         updateShipmentDetails: (
             state,
-            { payload: { name, value } }: { payload: { name: keyof ShipmentsState['shipmentDetails']; value: string | Date } },
+            { payload: { name, value } }: { payload: { name: keyof ShipmentsState['shipmentDetails']; value: string } },
         ) => {
-            if (name === 'date') {
-                state.shipmentDetails.date = value as Date;
-            }
-            if (name !== 'date' && name !== 'id') {
-                state.shipmentDetails[name] = value as string;
-            }
+            state.shipmentDetails[name] = value;
         },
-        updateShipmentDate: (state, { payload }: { payload: Date }) => {
+        updateShipmentDate: (state, { payload }: { payload: string }) => {
             state.shipmentDetails.date = payload;
         },
     },
@@ -91,7 +95,6 @@ const singleShipmentSlice = createSlice({
                 state.isError = false;
                 state.shipment = action.payload;
                 state.shipmentDetails = {
-                    id: action.payload.id,
                     orderNo: action.payload.orderNo,
                     date: action.payload.date,
                     customer: action.payload.customer,

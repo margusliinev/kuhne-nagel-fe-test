@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 
 type InputProps = {
     id: string;
-    value: Date;
+    value: string;
     label: string;
     handleChange: (date: Date | undefined) => void;
 };
@@ -21,11 +21,16 @@ const FormRow = ({ id, value, label, handleChange }: InputProps) => {
                 <PopoverTrigger asChild>
                     <Button variant={'outline'} className={cn('justify-start text-left font-normal', !value && 'text-muted-foreground')}>
                         <CalendarIcon className='mr-2 h-4 w-4' />
-                        {value ? format(value, 'PPP') : <span>Pick a date</span>}
+                        {value ? format(new Date(value), 'PPP') : <span>Pick a date</span>}
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className='w-auto p-0'>
-                    <Calendar mode='single' selected={value} onSelect={(date: Date | undefined) => handleChange(date || undefined)} initialFocus />
+                    <Calendar
+                        mode='single'
+                        selected={new Date(value)}
+                        onSelect={(date: Date | undefined) => handleChange(date || undefined)}
+                        initialFocus
+                    />
                 </PopoverContent>
             </Popover>
         </div>

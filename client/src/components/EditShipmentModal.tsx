@@ -4,8 +4,8 @@ import { getShipmentById, updateShipmentDetails, updateShipmentDate, updateShipm
 import FormRowInput from './FormRowInput';
 import FormRowSelect from './FormRowSelect';
 import FormRowDate from './FormRowDate';
-import { useState } from 'react';
 import PageSpinner from './PageSpinner';
+import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
 
 const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
@@ -16,14 +16,21 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await dispatch(updateShipmentById({ id: shipmentID, updateShipmentDto: shipmentDetails })).then((res) => {
-            if (res.meta.requestStatus === 'fulfilled') {
+        await dispatch(updateShipmentById({ id: shipmentID, updateShipmentDto: shipmentDetails }))
+            .then((res) => {
+                if (res.meta.requestStatus === 'fulfilled') {
+                    toast({
+                        title: 'Shipment Updated',
+                    });
+                }
+                setOpen(false);
+            })
+            .catch(() => {
                 toast({
-                    title: 'Shipment Updated',
+                    title: 'Failed to update the shipment',
+                    variant: 'destructive',
                 });
-            }
-            setOpen(false);
-        });
+            });
     };
 
     return (
@@ -39,7 +46,7 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
                     <DialogTitle className='font-medium uppercase text-sm text-primary/80'>Shipment Details</DialogTitle>
                 </DialogHeader>
                 {isLoading ? (
-                    <div className='min-w-[300px] min-h-[300px] grid place-items-center'>
+                    <div className='min-w-[300px] min-h-[355px] grid place-items-center'>
                         <PageSpinner />
                     </div>
                 ) : (
@@ -55,8 +62,11 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
                         <FormRowDate
                             id='date'
                             label='date'
-                            value={shipmentDetails.date ? new Date(shipmentDetails.date) : new Date()}
-                            handleChange={(date) => dispatch(updateShipmentDate(date!))}
+                            value={shipmentDetails.date}
+                            handleChange={(date) => {
+                                const dateStr = date ? date.toISOString() : shipmentDetails.date;
+                                dispatch(updateShipmentDate(dateStr));
+                            }}
                         />
                         <FormRowInput
                             type='text'

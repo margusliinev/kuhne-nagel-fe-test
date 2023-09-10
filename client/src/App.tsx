@@ -7,7 +7,7 @@ import PageSpinner from './components/PageSpinner';
 
 function App() {
     const dispatch = useAppDispatch();
-    const { displayedShipments, shipments, count, isLoading } = useAppSelector((store) => store.shipments);
+    const { displayedShipments, shipments, count, isLoading, isError } = useAppSelector((store) => store.shipments);
 
     const pages = Array.from({ length: Math.ceil(shipments.length / count) }, (_, index) => {
         return index + 1;
@@ -21,6 +21,18 @@ function App() {
         return (
             <main className='w-screen h-screen grid place-items-center'>
                 <PageSpinner />
+            </main>
+        );
+    }
+
+    if (isError) {
+        return (
+            <main className='w-screen h-screen grid place-items-center'>
+                <header>
+                    <h1 className='text-center text-4xl font-bold text-blue-900 uppercase mt-4 mb-2'>Kuehne+Nagel</h1>
+                    <h2 className='text-center text-lg font-semibold text-blue-900 mb-4'>Front-End Assignment</h2>
+                    <h1 className='text-4xl font-semibold text-red-500'>Error fetching shipments info</h1>
+                </header>
             </main>
         );
     }

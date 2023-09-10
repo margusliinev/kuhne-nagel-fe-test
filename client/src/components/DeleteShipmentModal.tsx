@@ -20,15 +20,22 @@ const DeleteShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
     const { toast } = useToast();
 
     const handleDelete = async () => {
-        await dispatch(deleteShipmentById(shipmentID)).then((res) => {
-            if (res.meta.requestStatus === 'fulfilled') {
+        await dispatch(deleteShipmentById(shipmentID))
+            .then((res) => {
+                if (res.meta.requestStatus === 'fulfilled') {
+                    toast({
+                        title: 'Shipment deleted',
+                        variant: 'destructive',
+                    });
+                }
+                setOpen(false);
+            })
+            .catch(() => {
                 toast({
-                    title: 'Shipment deleted',
+                    title: 'Failed to delete the shipment',
                     variant: 'destructive',
                 });
-            }
-            setOpen(false);
-        });
+            });
     };
 
     return (
