@@ -7,10 +7,11 @@ import FormRowDate from './FormRowDate';
 import PageSpinner from './PageSpinner';
 import { useState } from 'react';
 import { useToast } from '@/components/ui/use-toast';
+import ButtonSpinner from './ButtonSpinner';
 
 const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
     const { toast } = useToast();
-    const { shipmentDetails, isLoading } = useAppSelector((store) => store.singleShipment);
+    const { shipmentDetails, isLoading, isLoadingUpdate } = useAppSelector((store) => store.singleShipment);
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
 
@@ -99,7 +100,7 @@ const EditShipmentModal = ({ shipmentID }: { shipmentID: number }) => {
                             handleChange={(value) => dispatch(updateShipmentDetails({ name: 'status', value: value }))}
                         />
                         <Button type='submit' className='bg-emerald-600 w-20 hover:bg-emerald-700' size={'sm'}>
-                            Update
+                            {isLoadingUpdate ? <ButtonSpinner /> : 'Update'}
                         </Button>
                     </form>
                 )}

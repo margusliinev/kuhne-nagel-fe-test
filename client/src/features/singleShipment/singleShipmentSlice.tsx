@@ -15,6 +15,8 @@ type ShipmentsState = {
         status: string;
         consignee: string;
     };
+    isLoadingUpdate: boolean;
+    isErrorUpdate: boolean;
 };
 
 const initialState: ShipmentsState = {
@@ -29,6 +31,8 @@ const initialState: ShipmentsState = {
         status: '',
         consignee: '',
     },
+    isLoadingUpdate: false,
+    isErrorUpdate: false,
 };
 
 const getShipmentById = createAsyncThunk('singleShipment/getShipmentById', async (id: number, thunkAPI) => {
@@ -102,6 +106,16 @@ const singleShipmentSlice = createSlice({
                     status: action.payload.status,
                     consignee: action.payload.consignee,
                 };
+            })
+            .addCase(updateShipmentById.pending, (state) => {
+                state.isLoadingUpdate = true;
+            })
+            .addCase(updateShipmentById.rejected, (state) => {
+                state.isLoadingUpdate = false;
+                state.isErrorUpdate = true;
+            })
+            .addCase(updateShipmentById.fulfilled, (state) => {
+                state.isLoadingUpdate = false;
             });
     },
 });
