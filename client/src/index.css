@@ -59,3 +59,12 @@
         @apply bg-background text-foreground;
     }
 }
+
+@layer components {
+    .table-header {
+        @apply border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80;
+    }
+    .table-data {
+        @apply border last-of-type:border-r border-border text-left py-4 px-2 text-sm;
+    }
+}

@@ -15,27 +15,13 @@ const TableHeader = () => {
     return (
         <thead>
             <tr>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
-                    orderNo
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden sm:table-cell'>
-                    delivery date
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
-                    customer
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden lg:table-cell'>
-                    trackingNo
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden md:table-cell'>
-                    status
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80 hidden lg:table-cell'>
-                    consignee
-                </th>
-                <th className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r uppercase font-medium text-sm bg-primary-foreground text-primary/80'>
-                    Modify
-                </th>
+                <th className='table-header'>orderNo</th>
+                <th className='table-header hidden sm:table-cell'>delivery date</th>
+                <th className='table-header'>customer</th>
+                <th className='table-header hidden lg:table-cell'>trackingNo</th>
+                <th className='table-header hidden md:table-cell'>status</th>
+                <th className='table-header hidden lg:table-cell'>consignee</th>
+                <th className='table-header'>Modify</th>
             </tr>
         </thead>
     );
@@ -47,20 +33,12 @@ const TableBody = ({ shipments }: { shipments: Shipment[] }) => {
             {shipments.map((shipment) => {
                 return (
                     <tr key={shipment.id}>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>{shipment.orderNo}</td>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden sm:table-cell'>
-                            {new Date(shipment.date).toLocaleDateString()}
-                        </td>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm'>{shipment.customer}</td>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden lg:table-cell'>
-                            {shipment.trackingNo}
-                        </td>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden md:table-cell'>
-                            {shipment.status}
-                        </td>
-                        <td className='border last-of-type:border-r border-border text-left py-4 px-2 text-sm hidden lg:table-cell'>
-                            {shipment.consignee}
-                        </td>
+                        <td className='table-data'>{shipment.orderNo}</td>
+                        <td className='table-data hidden sm:table-cell'>{new Date(shipment.date).toLocaleDateString()}</td>
+                        <td className='table-data'>{shipment.customer}</td>
+                        <td className='table-data hidden lg:table-cell'>{shipment.trackingNo}</td>
+                        <td className='table-data hidden md:table-cell'>{shipment.status}</td>
+                        <td className='table-data hidden lg:table-cell'>{shipment.consignee}</td>
                         <td className='border-y border-border text-left py-4 px-2 first-of-type:border-l last-of-type:border-r'>
                             <div className='grid sm:flex items-center gap-2'>
                                 <EditShipmentModal shipmentID={shipment.id} />
